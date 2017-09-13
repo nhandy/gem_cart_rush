@@ -18,9 +18,9 @@ Supports:
 - npm install
 
 ## Running webpack dev server
-## Should start up using localhost:8080
-## If you have node server already it may detect that and start on port 8081
 - npm start
+- Should start up using localhost:8080
+- If you have node server already it may detect that and start on port 8081
 
 ## Testing with Watcher
 - npm run test-watch
