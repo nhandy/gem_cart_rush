@@ -14,7 +14,7 @@ export default class Player extends Phaser.Group {
         this.playerinfo[key] = value;
     }
     update () {
-        console.log("RUNNING PLAY STATE UPDATE ...");
+        console.log("RUNNING PLAYER UPDATE ...");
         if (this.jumpKey.isDown) {
             console.log("JUMPING");
         }
