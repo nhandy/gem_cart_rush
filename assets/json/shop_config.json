@@ -8,6 +8,10 @@
         {
             "name" : "shield",
             "file" : "Shield.png"
+        },
+        {
+            "name" : "vacuum",
+            "file" : "Vacuum.png"
         }
      ]
 }
