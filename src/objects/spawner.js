@@ -28,6 +28,12 @@ export default class Spawner {
     spawnItem () {
         var randNum = this.game.rnd.frac();
 
-        return _.first(_.filter(this.spawnItems, o => { return o < randNum; }));
+        var ItemClass = _.first(_.filter(this.spawnItems, o => { return o < randNum; }));
+
+        if (ItemClass) {
+            return new ItemClass(this.game, this.game.rnd.between(this.minX, this.maxX), this.game.rnd.between(this.minY, this.maxY));
+        }
+
+        return undefined;
     }
 }
