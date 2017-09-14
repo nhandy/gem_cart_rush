@@ -6,10 +6,10 @@ export default class Spawner {
             minY: lowest y value
             maxX: highest x value
             maxY: higest y value
-            spawnItems: {
-                [Item1Class, 0.5],
-                [Item2Class, 0.3]
-            }
+            spawnItems: [
+                [Item2Class, 0.3],
+                [Item1Class, 0.5]
+            ]
     */
     constructor (game, minX = 0, minY = 0, maxX = 0, maxY = 0, spawnItems = {}) {
         this.game = game;
