@@ -2,7 +2,6 @@ import Spawner from '../objects/spawner';
 import Player from '../objects/player';
 import BlueGem from '../objects/items/blueGem';
 import Bomb from '../objects/items/bomb';
-import Boom from '../objects/items/explosion';
 import dropRates from '../../assets/json/drop_rates.json';
 
 require('../../assets/images/Back.png');
