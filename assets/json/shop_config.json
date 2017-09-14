@@ -1,4 +1,14 @@
 {
-    "armor_cost": 10
+    "armor_cost": 10,
+    "items" : [
+        {
+            "name" : "armor",
+            "file" : "Armor.png"
+        },
+        {
+            "name" : "shield",
+            "file" : "Shield.png"
+        }
+     ]
 }
 
