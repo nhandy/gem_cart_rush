@@ -50,7 +50,7 @@ export default class PlayState extends Phaser.State {
         }
 
         // Move the cart until it gets up to full speed
-        if (cart.body.velocity.x < 200) { 
+        if (cart.body.velocity.x < 200) {
             cart.body.velocity.x += 30;
             tracks.setAll('body.velocity.x', -(cart.body.velocity.x), 'true', 'false', 0);
         }
