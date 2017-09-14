@@ -1,16 +1,18 @@
 import Spawner from '../objects/spawner';
 import Player from '../objects/player';
+import BlueGem from '../objects/items/blueGem';
 import Bomb from '../objects/items/bomb';
+import Boom from '../objects/items/explosion';
 import dropRates from '../../assets/json/drop_rates.json';
 
 require('../../assets/images/Back.png');
 require('../../assets/images/bg_cave.png');
 require('../../assets/images/track_str_sm.gif');
 require('../../assets/images/cart_str.gif');
+require('../../assets/images/blueGem.png');
 require('../../assets/images/bomb.png');
 require('../../assets/images/arrow.png');
 require('../../assets/images/brake.png');
-require('../../assets/images/blueGem.png');
 
 export default class PlayState extends Phaser.State {
     preload () {
@@ -19,6 +21,7 @@ export default class PlayState extends Phaser.State {
         this.game.load.image('cart_str', '/assets/cart_str.gif');
         this.game.load.image('back_button', '/assets/Back.png');
         this.game.load.image('bomb', '/assets/bomb.png');
+        this.game.load.image('boom', '/assets/explosion.png');
         this.game.load.image('arrow', '/assets/arrow.png');
         this.game.load.image('brake', '/assets/brake.png');
         this.game.load.image('blueGem', '/assets/blueGem.png');
@@ -46,7 +49,7 @@ export default class PlayState extends Phaser.State {
         this.game.backButton = this.game.add.button(0, 0, 'back_button', function () { this.game.state.start('MainMenu') }, this);
         this.game.boostButton = this.game.add.button(this.game.width - 100, 0, 'arrow', function(){if (this.booster < 700) { this.booster += 50; }}, this);
         this.game.brakeButton = this.game.add.button(this.game.width - 200, 0, 'brake', function(){if (this.booster > -100) { this.booster -= 50; }}, this);
-        this.gemSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, ['gem', 1]);
+        this.gemSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [BlueGem]);
         this.bombSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [Bomb]);
     }
 
@@ -79,6 +82,7 @@ export default class PlayState extends Phaser.State {
         if (newGem) {
             newGem.body.x = this.t.body.x;
             newGem.body.velocity.x = currentVelocity;
+            this.game.add.existing(newGem);
         }
 
         var bomb = this.bombSpawner.spawnItem();
