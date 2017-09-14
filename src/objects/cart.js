@@ -19,7 +19,7 @@ export default class Cart extends Phaser.Sprite {
         let modifier = 0;
 
         if (this.body.x > 150) {
-            modifier = 20;
+            modifier = (this.body.x - 150)/2 + 50;
             this.fixPosition = true;
         } else if (this.body.x < 20) {
             modifier = -20;

@@ -12,7 +12,7 @@ export default class Item extends Phaser.Sprite {
         if (this.x < this.width - 100) { // kill items when they are off the screen
             this.destroy();
         } else {
-            this.game.physics.arcade.collide(this, this.player, () => {this.collided()});
+            this.game.physics.arcade.overlap(this, this.player, () => {this.collided()});
         }
     }
 
