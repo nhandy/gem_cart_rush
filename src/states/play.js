@@ -26,13 +26,11 @@ export default class PlayState extends Phaser.State {
     }
 
     create () {
-        this.game.keyboard = new Phaser.Keyboard(this.game);
-        this.game.dpad = this.game.keyboard.createCursorKeys();
+        this.game.dpad = this.game.input.keyboard.createCursorKeys();
         this.bgCave = this.game.add.tileSprite(0, 0, 800, 600, 'this.bgCave');
         this.tracks = this.game.add.group();
         this.tracks.enableBody = true;
-        this.player = new Player(this.game);
-        //this.game.add.object(this.player);
+        this.game.player = new Player(this.game);
         for (var i = 0, len = 100; i < len; i += 35) {
             this.t = this.tracks.create(i, this.game.height * 0.8, 'track_str');
             this.t.body.immovable = true;

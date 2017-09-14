@@ -4,7 +4,6 @@ export default class Player extends Phaser.Group {
         super(game);
         this.playerinfo = playerconfig;
         this.enableBody = true;
-        this.game.input.keyboard.addKeyCapture(Phaser.KeyCode.SPACEBAR);
         this.jumpKey = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     }
     getInfo () {
