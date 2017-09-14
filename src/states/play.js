@@ -38,7 +38,7 @@ export default class PlayState extends Phaser.State {
         this.gems = this.game.add.group();
         this.gems.enableBody = true;
 
-        this.player = new Player(this.game);
+        this.game.player = this.player = new Player(this.game);
 
         for (var i = 0, len = 100; i < len; i += 35) {
             this.t = this.tracks.create(i, this.game.height * 0.8, 'track_str');
