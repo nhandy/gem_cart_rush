@@ -9,6 +9,7 @@ require('../../assets/images/bg_cave.png');
 require('../../assets/images/track_str_sm.gif');
 require('../../assets/images/cart_str.gif');
 require('../../assets/images/blueGem.png');
+require('../../assets/images/greyGem.png');
 require('../../assets/images/bomb.png');
 require('../../assets/images/arrow.png');
 require('../../assets/images/brake.png');
@@ -23,6 +24,7 @@ export default class PlayState extends Phaser.State {
         this.game.load.image('boom', '/assets/explosion.png');
         this.game.load.image('arrow', '/assets/arrow.png');
         this.game.load.image('brake', '/assets/brake.png');
+        this.game.load.image('jumper', '/assets/greyGem.png');
         this.game.load.image('blueGem', '/assets/blueGem.png');
         this.booster = 0;
         this.powerUps = [];
@@ -55,6 +57,11 @@ export default class PlayState extends Phaser.State {
         this.powerUpNames.push('boost','brake');
         this.powerUps['boost'] = this.game.add.button(this.game.width - 100, 0, 'arrow', () => {if (this.player.cart.booster < 700) { this.usePowerup('boost', 120); this.player.cart.booster += 300; }}, this);
         this.powerUps['brake'] = this.game.add.button(this.game.width - 200, 0, 'brake', () => {if (this.player.cart.booster > -100) { this.usePowerup('brake', 240); this.player.cart.booster -= 30; }}, this);
+
+        this.game.jumpButton = this.game.add.button(this.game.width - 300, 0, 'jumper');
+        this.game.jumpButton.onInputDown.add(this.player.jumpButtonDown, this.player);
+        this.game.jumpButton.onInputUp.add(this.player.jumpButtonUp, this.player);
+
         this.gemSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [BlueGem]);
         this.bombSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [Bomb]);
   
