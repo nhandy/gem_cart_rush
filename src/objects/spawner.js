@@ -17,9 +17,17 @@ export default class Spawner {
         this.maxX = maxX > minX ? maxX : minX;
         this.minY = minY;
         this.maxY = maxY > minY ? maxY : minY;
+
+        if (!Array.isArray(spawnItems)) {
+            throw new Error('spawnItems is not an array');
+        }
+
         this.spawnItems = spawnItems;
     }
 
     spawnItem () {
+        var randNum = this.game.rnd.frac();
+
+        return _.first(_.filter(this.spawnItems, o => { return o < randNum; }));
     }
 }
