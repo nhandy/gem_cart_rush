@@ -20,6 +20,7 @@ export default class PlayState extends Phaser.State {
     }
 
     create () {
+        this.game.keyboard = new Phaser.Keyboard(this.game);
         bg_cave = this.game.add.tileSprite(0, 0, 800, 600, 'bg_cave');
         tracks = this.game.add.group();
         tracks.enableBody = true;
