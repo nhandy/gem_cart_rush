@@ -101,7 +101,7 @@ export default class PlayState extends Phaser.State {
             this.setTrackSpeed(trackGroup, -(myCart.body.velocity.x));
             this.fix_position = 0;
         } else {
-            if (myCart.body.velocity.x < (200 + this.booster)) {
+            if (myCart.body.velocity.x < 1000 && myCart.body.velocity.x < (200 + this.booster)) {
                 myCart.body.velocity.x += 20;
             // Move the cart until it gets back close to full speed
             } else if (myCart.body.velocity.x > 100 && myCart.body.velocity.x > (200 + this.booster + 20)) {
