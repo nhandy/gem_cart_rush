@@ -43,4 +43,7 @@ export default class Player extends Phaser.Group {
             console.log("JUMPING: " + this.jumping);
         }
     }
+    collectGem() {
+        this.setInfo('gems', this.getInfo()['gems'] + 1);
+    }
 }

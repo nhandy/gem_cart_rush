@@ -10,7 +10,7 @@ export default class BlueGem extends Item {
     }
 
     collided() {
-        console.log('Collided with Gem');
+        this.game.player.collectGem();
         this.destroy();
     }
 }
