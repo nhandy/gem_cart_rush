@@ -9,7 +9,6 @@ var tracks;
 var cart_type;
 export default class PlayState extends Phaser.State {
     preload() {
-        console.log('play');
         this.game.load.image('bg_cave', '/assets/bg_cave.png');
         this.game.load.image('track_str', '/assets/track_str_sm.gif');
         this.game.load.image('cart_str', '/assets/cart_str.gif');
