@@ -5,6 +5,7 @@ export default class BlueGem extends Item {
         super(game, x, y, 'blueGem');
 
         this.spawnRate = 0.08;
+        this.body.mass = .15;
 
         this.scale.setTo(1);
     }

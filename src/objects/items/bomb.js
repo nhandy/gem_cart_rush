@@ -5,6 +5,7 @@ export default class Bomb extends Item {
         super(game, x, y, 'bomb');
 
         this.spawnRate = 0.1;
+        this.body.mass = .6;
 
         this.scale.setTo(0.25);
     }
