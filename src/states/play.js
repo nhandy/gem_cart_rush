@@ -126,8 +126,8 @@ export default class PlayState extends Phaser.State {
 
         var portal = this.portalSpawner.spawnItem();
         if (portal) {
-            portal.body.x = this.t.body.x;
-            portal.body.velocity.x = currentVelocity;
+            portal.body.x = nextTrack.body.x;
+            portal.body.velocity.x = currentSpeed;
             this.portals.add(portal);
         }
     }
