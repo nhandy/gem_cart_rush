@@ -41,6 +41,7 @@ export default class Player extends Phaser.Group {
 
         if (this.jumping) {
             console.log("JUMPING: " + this.jumping);
+            this.cart.body.velocity.y = -100;
         }
     }
     collectGem() {
