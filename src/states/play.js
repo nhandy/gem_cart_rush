@@ -67,7 +67,6 @@ export default class PlayState extends Phaser.State {
         this.gemSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [BlueGem]);
         this.bombSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [Bomb]);
         this.portalSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [Portal]);
-    }
 
         var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
 
