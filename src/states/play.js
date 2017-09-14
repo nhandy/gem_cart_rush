@@ -43,9 +43,11 @@ export default class PlayState extends Phaser.State {
 
         this.bombs = this.game.add.group();
         this.bombs.enableBody = true;
+        this.bombs.inputEnableChildren = true;
 
         this.gems = this.game.add.group();
         this.gems.enableBody = true;
+        this.gems.inputEnableChildren = true;
 
         this.portals = this.game.add.group();
         this.portals.enableBody = true;

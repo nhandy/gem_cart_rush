@@ -8,6 +8,7 @@ export default class BlueGem extends Item {
         this.body.mass = .15;
 
         this.scale.setTo(1);
+        this.events.onInputDown.add(this.collided, this);
     }
 
     collided() {
