@@ -8,6 +8,7 @@ export default class Player extends Phaser.Group {
         this.enableBody = true;
         this.jumpKey = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
         this.jumping = 0;
+        this.jumpable = 1;
         this.jumpButton = this.game.add.button(this.game.width - 250, 0, 'jumper');
         this.jumpButton.onInputDown.add(this.jumpButtonDown, this);
         this.jumpButton.onInputUp.add(this.jumpButtonUp, this);
@@ -39,10 +40,18 @@ export default class Player extends Phaser.Group {
             this.jumping &= ~2;
         }
 
-        if (this.jumping) {
-            console.log("JUMPING: " + this.jumping);
-            this.cart.body.velocity.x  = 0;
-            this.cart.body.velocity.y -= 15;
+        if (this.jumpable) {
+            if (this.jumping) {
+                console.log("JUMPING: " + this.jumping);
+                this.cart.body.velocity.x  = 0;
+                this.cart.body.velocity.y -= 15;
+            }
+            else {
+                this.jumpable = 0;
+            }
+        }
+        else if (this.cart.body.y >= 430) {
+            this.jumpable = 1;
         }
     }
     collectGem() {
