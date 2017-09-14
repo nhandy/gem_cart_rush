@@ -64,16 +64,15 @@ export default class PlayState extends Phaser.State {
 
         this.gemSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [BlueGem]);
         this.bombSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [Bomb]);
-  
 
         var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
 
         this.gemText = this.game.add.text(200, 0, "Gems: -", style);
         this.scoreText = this.game.add.text(400, 0, "Score: -", style);
- 
+
         this.player.setInfo("gems",0);
         this.player.setInfo("score",0);
-   }
+    }
 
     update () {
         var gemCount = this.player.getInfo()["gems"];
