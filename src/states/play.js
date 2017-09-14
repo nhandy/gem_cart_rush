@@ -3,6 +3,7 @@ import Player from '../objects/player';
 import BlueGem from '../objects/items/blueGem';
 import Bomb from '../objects/items/bomb';
 import Portal from '../objects/items/portal';
+import TrackPool from '../objects/track-pool';
 import dropRates from '../../assets/json/drop_rates.json';
 
 require('../../assets/images/Back.png');
@@ -38,9 +39,6 @@ export default class PlayState extends Phaser.State {
     create () {
         this.bgCave = this.game.add.tileSprite(0, 0, 800, 600, 'this.bgCave');
 
-        this.tracks = this.game.add.group();
-        this.tracks.enableBody = true;
-
         this.bombs = this.game.add.group();
         this.bombs.enableBody = true;
         this.bombs.inputEnableChildren = true;
@@ -54,12 +52,9 @@ export default class PlayState extends Phaser.State {
 
         this.game.player = this.player = new Player(this.game);
 
-        for (var i = 0, len = 100; i < len; i += 35) {
-            this.t = this.tracks.create(i, this.game.height * 0.8, 'track_str');
-            this.t.body.immovable = true;
-        }
-
         this.player.cart.events.speedUpdated.add(speed => { this.setGroupSpeed(this.tracks, speed); this.setGroupSpeed(this.bombs, speed); this.setGroupSpeed(this.gems, speed); this.setGroupSpeed(this.portals, speed); });
+
+        this.tracks = new TrackPool(this.game);
 
         this.game.backButton = this.game.add.button(0, 0, 'back_button', function () { this.game.state.start('MainMenu') }, this);
         this.powerUpNames.push('boost','brake');
@@ -85,10 +80,12 @@ export default class PlayState extends Phaser.State {
         var score = this.player.getInfo()["score"];
         this.scoreText.setText("Score: " + score);
         //  Scroll the background relative to track speed
-        this.bgCave.tilePosition.x -= -(this.t.body.velocity.x / 100)
+        const lastAliveTrack = this.tracks.getLastAlive();
+
+        this.bgCave.tilePosition.x -= -(lastAliveTrack.body.velocity.x / 100);
 
         // Keep spawning the tracks
-        if (this.t.body.x < this.game.width) {
+        if (lastAliveTrack.body.x < this.game.width) {
             this.spawn();
         }
 
@@ -101,34 +98,29 @@ export default class PlayState extends Phaser.State {
                 }
             }
         }, this);
-        var firstAlive = this.tracks.getFirstAlive();
-        if (firstAlive.x < -35) { // Cleanup as we go
-            this.tracks.removeChild(firstAlive);
-        }
+
         // Make sure collision with tracks happens correctly, may need to do a callback to make sure it goes up hill?
         this.game.physics.arcade.collide(this.player, this.tracks, null, null, null);
-        // this.syncCart(this.cart, this.tracks);
     }
 
     spawn () {
-        var currentVelocity = this.t.body.velocity.x
-        var currentX = this.t.body.x
+        const lastAliveTrack = this.tracks.getLastAlive();
 
-        this.t = this.tracks.create(currentX + 35, this.game.height * 0.8, 'track_str');
-        this.t.body.velocity.x = currentVelocity;
-        this.t.body.immovable = true;
+        let currentSpeed = lastAliveTrack.body.velocity.x;
+
+        let nextTrack = this.tracks.spawnTrack(lastAliveTrack.body.x, currentSpeed);
 
         var gem = this.gemSpawner.spawnItem();
         if (gem) {
-            gem.body.x = this.t.body.x;
-            gem.body.velocity.x = currentVelocity;
+            gem.body.x = nextTrack.body.x;
+            gem.body.velocity.x = currentSpeed;
             this.gems.add(gem);
         }
 
         var bomb = this.bombSpawner.spawnItem();
         if (bomb) {
-            bomb.body.x = this.t.body.x;
-            bomb.body.velocity.x = currentVelocity;
+            bomb.body.x = nextTrack.body.x;
+            bomb.body.velocity.x = currentSpeed;
             this.bombs.add(bomb);
         }
 
