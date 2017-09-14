@@ -8,19 +8,19 @@ var cart;
 var tracks;
 var cart_type;
 export default class PlayState extends Phaser.State {
-    preload() {
+    preload () {
         this.game.load.image('bg_cave', '/assets/bg_cave.png');
         this.game.load.image('track_str', '/assets/track_str_sm.gif');
         this.game.load.image('cart_str', '/assets/cart_str.gif');
         this.game.load.image('back_button', '/assets/Back.png');
     }
 
-    create() {
+    create () {
         bg_cave = this.game.add.tileSprite(0, 0, 800, 600, 'bg_cave');
         tracks = this.game.add.group();
         tracks.enableBody = true;
         for (var i = 0, len = 100; i < len; i += 35) {
-            this.t = tracks.create(i, this.game.height*.8, 'track_str');
+            this.t = tracks.create(i, this.game.height * 0.8, 'track_str');
             this.t.body.immovable = true;
         }
         cart_type = this.game.add.group();
@@ -31,10 +31,10 @@ export default class PlayState extends Phaser.State {
         cart.body.collideWorldBounds = true;
         cart.body.checkCollision.up = true;
         cart.body.checkCollision.down = true;
-        this.game.shopButton = this.game.add.button(0, 0, 'back_button', function(){this.game.state.start('MainMenu')}, this);
+        this.game.shopButton = this.game.add.button(0, 0, 'back_button', function () { this.game.state.start('MainMenu') }, this);
     }
 
-    update() {
+    update () {
         //  Scroll the background, may want to do it relative to speed of tracks
         bg_cave.tilePosition.x -= 2;
 
@@ -43,7 +43,7 @@ export default class PlayState extends Phaser.State {
         if (this.t.body.x < 800) {
             current_velocity = this.t.body.velocity.x
             current_x = this.t.body.x
-            this.t = tracks.create(current_x + 35, this.game.height*.8, 'track_str');
+            this.t = tracks.create(current_x + 35, this.game.height * 0.8, 'track_str');
             this.t.body.immovable = true;
             this.t.body.velocity.x = current_velocity;
         }
