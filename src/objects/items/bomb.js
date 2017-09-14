@@ -8,4 +8,9 @@ export default class Bomb extends Item {
 
         this.scale.setTo(0.25);
     }
+
+    collided () {
+        console.log('Collided with Bomb');
+        this.destroy();
+    }
 }

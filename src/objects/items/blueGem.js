@@ -8,4 +8,9 @@ export default class BlueGem extends Item {
 
         this.scale.setTo(1);
     }
+
+    collided() {
+        console.log('Collided with Gem');
+        this.destroy();
+    }
 }
