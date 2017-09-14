@@ -2,6 +2,7 @@ import Spawner from '../objects/spawner';
 import Player from '../objects/player';
 import BlueGem from '../objects/items/blueGem';
 import Bomb from '../objects/items/bomb';
+import Portal from '../objects/items/portal';
 import dropRates from '../../assets/json/drop_rates.json';
 
 require('../../assets/images/Back.png');
@@ -11,6 +12,7 @@ require('../../assets/images/cart_str.gif');
 require('../../assets/images/blueGem.png');
 require('../../assets/images/greyGem.png');
 require('../../assets/images/bomb.png');
+require('../../assets/images/portal.png');
 require('../../assets/images/arrow.png');
 require('../../assets/images/brake.png');
 
@@ -21,6 +23,7 @@ export default class PlayState extends Phaser.State {
         this.game.load.image('cart_str', '/assets/cart_str.gif');
         this.game.load.image('back_button', '/assets/Back.png');
         this.game.load.image('bomb', '/assets/bomb.png');
+        this.game.load.image('portal', '/assets/portal.png');
         this.game.load.image('boom', '/assets/explosion.png');
         this.game.load.image('arrow', '/assets/arrow.png');
         this.game.load.image('brake', '/assets/brake.png');
@@ -44,6 +47,9 @@ export default class PlayState extends Phaser.State {
         this.gems = this.game.add.group();
         this.gems.enableBody = true;
 
+        this.portals = this.game.add.group();
+        this.portals.enableBody = true;
+
         this.game.player = this.player = new Player(this.game);
 
         for (var i = 0, len = 100; i < len; i += 35) {
@@ -51,7 +57,7 @@ export default class PlayState extends Phaser.State {
             this.t.body.immovable = true;
         }
 
-        this.player.cart.events.speedUpdated.add(speed => { this.setGroupSpeed(this.tracks, speed); this.setGroupSpeed(this.bombs, speed); this.setGroupSpeed(this.gems, speed); });
+        this.player.cart.events.speedUpdated.add(speed => { this.setGroupSpeed(this.tracks, speed); this.setGroupSpeed(this.bombs, speed); this.setGroupSpeed(this.gems, speed); this.setGroupSpeed(this.portals, speed); });
 
         this.game.backButton = this.game.add.button(0, 0, 'back_button', function () { this.game.state.start('MainMenu') }, this);
         this.powerUpNames.push('boost','brake');
@@ -64,6 +70,8 @@ export default class PlayState extends Phaser.State {
 
         this.gemSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [BlueGem]);
         this.bombSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [Bomb]);
+        this.portalSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [Portal]);
+    }
 
         var style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
 
@@ -113,11 +121,11 @@ export default class PlayState extends Phaser.State {
         this.t.body.velocity.x = currentVelocity;
         this.t.body.immovable = true;
 
-        var newGem = this.gemSpawner.spawnItem();
-        if (newGem) {
-            newGem.body.x = this.t.body.x;
-            newGem.body.velocity.x = currentVelocity;
-            this.gems.add(newGem);
+        var gem = this.gemSpawner.spawnItem();
+        if (gem) {
+            gem.body.x = this.t.body.x;
+            gem.body.velocity.x = currentVelocity;
+            this.gems.add(gem);
         }
 
         var bomb = this.bombSpawner.spawnItem();
@@ -125,6 +133,13 @@ export default class PlayState extends Phaser.State {
             bomb.body.x = this.t.body.x;
             bomb.body.velocity.x = currentVelocity;
             this.bombs.add(bomb);
+        }
+
+        var portal = this.portalSpawner.spawnItem();
+        if (portal) {
+            portal.body.x = this.t.body.x;
+            portal.body.velocity.x = currentVelocity;
+            this.portals.add(portal);
         }
     }
 
