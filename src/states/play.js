@@ -1,4 +1,5 @@
 import Spawner from '../objects/spawner';
+import Player from '../objects/player';
 import Bomb from '../objects/items/bomb';
 import dropRates from '../../assets/json/drop_rates.json';
 
@@ -30,6 +31,8 @@ export default class PlayState extends Phaser.State {
         this.bgCave = this.game.add.tileSprite(0, 0, 800, 600, 'this.bgCave');
         this.tracks = this.game.add.group();
         this.tracks.enableBody = true;
+        this.player = new Player(this.game);
+        //this.game.add.object(this.player);
         for (var i = 0, len = 100; i < len; i += 35) {
             this.t = this.tracks.create(i, this.game.height * 0.8, 'track_str');
             this.t.body.immovable = true;
@@ -88,7 +91,7 @@ export default class PlayState extends Phaser.State {
         }
     }
 
-	syncCart(myCart, trackGroup) {
+    syncCart(myCart, trackGroup) {
         var modifier = 0;
         if (myCart.body.x > 150) {
             modifier = 20;

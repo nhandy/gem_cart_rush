@@ -4,6 +4,7 @@ export default class Player extends Phaser.Group {
         super(game);
         this.playerinfo = playerconfig;
         this.enableBody = true;
+        game.keyboard.addKeyCapture(Phaser.Keyboard.SPACEBAR);
         this.jumpKey = game.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     }
     getInfo () {
@@ -11,5 +12,11 @@ export default class Player extends Phaser.Group {
     }
     setInfo (key, value) {
         this.playerinfo[key] = value;
+    }
+    update () {
+        console.log("RUNNING PLAY STATE UPDATE ...");
+        if (this.jumpKey.isDown) {
+            console.log("JUMPING");
+        }
     }
 }
