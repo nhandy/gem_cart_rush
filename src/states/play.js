@@ -8,6 +8,8 @@ var bg_cave;
 var cart;
 var tracks;
 var cart_type;
+import Spawner from '../objects/spawner';
+
 export default class PlayState extends Phaser.State {
     preload () {
         this.game.load.image('bg_cave', '/assets/bg_cave.png');
@@ -33,23 +35,20 @@ export default class PlayState extends Phaser.State {
         cart.body.collideWorldBounds = true;
         cart.body.checkCollision.up = true;
         cart.body.checkCollision.down = true;
-        this.game.shopButton = this.game.add.button(0, 0, 'back_button', function () { this.game.state.start('MainMenu') }, this);
+        this.game.backButton = this.game.add.button(0, 0, 'back_button', function(){this.game.state.start('MainMenu')}, this);
+        this.gemSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, ['gem', 1]);
     }
 
     update () {
         //  Scroll the background, may want to do it relative to speed of tracks
         bg_cave.tilePosition.x -= 2;
 
-        var current_velocity;
-        var current_x;
         if (this.t.body.x < 800) {
-            current_velocity = this.t.body.velocity.x
-            current_x = this.t.body.x
-            this.t = tracks.create(current_x + 35, this.game.height * 0.8, 'track_str');
-            this.t.body.immovable = true;
-            this.t.body.velocity.x = current_velocity;
+            this.spawn();
         }
-        if (cart.body.velocity.x < 200) { // Move the cart until it gets up to full speed
+
+        // Move the cart until it gets up to full speed
+        if (cart.body.velocity.x < 200) { 
             cart.body.velocity.x += 30;
             tracks.setAll('body.velocity.x', -(cart.body.velocity.x), 'true', 'false', 0);
         }
@@ -59,5 +58,20 @@ export default class PlayState extends Phaser.State {
         }
         // Make sure collision with tracks happens correctly, may need to do a callback to make sure it goes up hill?
         this.game.physics.arcade.collide(cart_type, tracks, null, null, null);
+    }
+
+    spawn() {
+        var currentVelocity = this.t.body.velocity.x
+        var currentX = this.t.body.x
+
+        this.t = tracks.create(currentX + 35, this.game.height*.8, 'track_str');
+        this.t.body.velocity.x = currentVelocity;
+        this.t.body.immovable = true;
+
+        var newGem = this.gemSpawner.spawnItem();
+        if (newGem) {
+            newGem.body.x = this.t.body.x;
+            newGem.body.velocity.x = currentVelocity;
+        }
     }
 };
