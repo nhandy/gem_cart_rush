@@ -114,9 +114,9 @@ export default class PlayState extends Phaser.State {
         if (modifier) {
             this.setTrackSpeed(trackGroup, -(myCart.body.velocity.x + modifier));
         }
-	}
+    }
 
-	setTrackSpeed(trackGroup, speed) {
+    setTrackSpeed(trackGroup, speed) {
         trackGroup.setAll('body.velocity.x', (speed), 'true', 'false', 0);
     }
 };
