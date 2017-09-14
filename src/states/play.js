@@ -43,8 +43,8 @@ export default class PlayState extends Phaser.State {
         this.cart.body.checkCollision.up = true;
         this.cart.body.checkCollision.down = true;
         this.game.backButton = this.game.add.button(0, 0, 'back_button', function () { this.game.state.start('MainMenu') }, this);
-        this.game.boostButton = this.game.add.button(this.game.width - 100, 0, 'arrow', function(){this.booster += 50}, this);
-        this.game.brakeButton = this.game.add.button(this.game.width - 200, 0, 'brake', function(){this.booster -= 50}, this);
+        this.game.boostButton = this.game.add.button(this.game.width - 100, 0, 'arrow', function(){if (this.booster < 700) { this.booster += 50; }}, this);
+        this.game.brakeButton = this.game.add.button(this.game.width - 200, 0, 'brake', function(){if (this.booster > -100) { this.booster -= 50; }}, this);
         this.gemSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, ['gem', 1]);
         this.bombSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [Bomb]);
     }
@@ -101,11 +101,11 @@ export default class PlayState extends Phaser.State {
             this.setTrackSpeed(trackGroup, -(myCart.body.velocity.x));
             this.fix_position = 0;
         } else {
-            if (myCart.body.velocity.x < 1000 && myCart.body.velocity.x < (200 + this.booster)) {
-                myCart.body.velocity.x += 20;
+            if (myCart.body.velocity.x < (300 + this.booster)) {
+                myCart.body.velocity.x += 10;
             // Move the cart until it gets back close to full speed
-            } else if (myCart.body.velocity.x > 100 && myCart.body.velocity.x > (200 + this.booster + 20)) {
-                myCart.body.velocity.x -= 20;
+            } else if (myCart.body.velocity.x > (200 + this.booster + 20)) {
+                myCart.body.velocity.x -= 10;
             }
         }
         if (modifier) {
