@@ -26,11 +26,13 @@ export default class Spawner {
     }
 
     spawnItem () {
-        var randNum = this.game.rnd.frac();
+        const randNum = this.game.rnd.frac();
 
-        var ItemClass = _.first(_.filter(this.spawnItems, o => { return o < randNum; }));
+        const spawnItems = _.filter(this.spawnItems, o => { return randNum <= o[1]; });
 
-        if (ItemClass) {
+        if (spawnItems.length > 0) {
+            const ItemClass = spawnItems[0][0];
+
             return new ItemClass(this.game, this.game.rnd.between(this.minX, this.maxX), this.game.rnd.between(this.minY, this.maxY));
         }
 
