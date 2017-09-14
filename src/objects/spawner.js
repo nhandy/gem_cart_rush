@@ -7,8 +7,8 @@ export default class Spawner {
             maxX: highest x value
             maxY: higest y value
             spawnItems: [
-                [Item2Class, 0.3],
-                [Item1Class, 0.5]
+                ItemClass1,
+                Item1Class2
             ]
     */
     constructor (game, minX = 0, minY = 0, maxX = 0, maxY = 0, spawnItems = []) {
@@ -28,12 +28,12 @@ export default class Spawner {
     spawnItem () {
         const randNum = this.game.rnd.frac();
 
-        const spawnItems = _.filter(this.spawnItems, o => { return randNum <= o[1]; });
+        const matchedItems = _.filter(this.spawnItems, O => { return (typeof O === 'function') ? randNum <= new O(this.game).spawnRate : 0; });
 
-        if (spawnItems.length > 0) {
-            const ItemClass = spawnItems[0][0];
+        if (matchedItems.length > 0) {
+            const ChosenItemClass = matchedItems[0];
 
-            return new ItemClass(this.game, this.game.rnd.between(this.minX, this.maxX), this.game.rnd.between(this.minY, this.maxY));
+            return new ChosenItemClass(this.game, this.game.rnd.between(this.minX, this.maxX), this.game.rnd.between(this.minY, this.maxY));
         }
 
         return undefined;

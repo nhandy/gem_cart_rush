@@ -47,7 +47,7 @@ export default class PlayState extends Phaser.State {
         this.game.boostButton = this.game.add.button(this.game.width - 100, 0, 'arrow', function(){booster += 50}, this);
         this.game.brakeButton = this.game.add.button(this.game.width - 200, 0, 'brake', function(){booster -= 50}, this);
         this.gemSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, ['gem', 1]);
-        this.bombSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [[Bomb, 0.25]]);
+        this.bombSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [Bomb]);
     }
 
     update () {
