@@ -7,7 +7,10 @@ export default class BlueGem extends Item {
         this.spawnRate = 0.08;
 
         this.scale.setTo(1);
-        this.events.onInputDown.add(this.collided, this);
+    }
+
+    clicked() {
+        this.collided();
     }
 
     collided() {

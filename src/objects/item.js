@@ -6,6 +6,7 @@ export default class Item extends Phaser.Sprite {
 
         this.player = this.game.player;
         this.spawnRate = 1; // value between 0 and 1, 1 means always 0 means practically never
+        this.events.onInputDown.add(this.clicked, this);
     }
 
     update () {
@@ -16,7 +17,11 @@ export default class Item extends Phaser.Sprite {
         }
     }
 
+    clicked () {
+        console.log('Something Clicked');
+    }
+
     collided () {
-        console.log('Collided with something');
+        console.log('Something Collided');
     }
 }
