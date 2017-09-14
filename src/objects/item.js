@@ -15,4 +15,8 @@ export default class Item extends Phaser.Sprite {
             this.game.physics.arcade.collide(this, this.player, () => {this.collided()});
         }
     }
+
+    collided () {
+        console.log('Collided with something');
+    }
 }

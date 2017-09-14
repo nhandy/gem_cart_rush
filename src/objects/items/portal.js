@@ -12,4 +12,9 @@ export default class Portal extends Item {
 
         this.scale.setTo(0.30);
     }
+
+    collided () {
+        console.log('YOU WIN!!');
+        this.destroy();
+    }
 }

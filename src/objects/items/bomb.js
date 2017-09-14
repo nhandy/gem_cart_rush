@@ -10,7 +10,7 @@ export default class Bomb extends Item {
     }
 
     collided () {
-        console.log('Collided with Bomb');
+        console.log('Collided with BOMB');
         this.destroy();
     }
 }
