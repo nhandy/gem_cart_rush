@@ -41,7 +41,7 @@ export default class Player extends Phaser.Group {
         }
 
         if (this.jumpable) {
-            if (this.jumping) {
+            if (this.jumping && this.cart.body.y > 350) {
                 console.log("JUMPING: " + this.jumping);
                 this.cart.body.velocity.x  = 0;
                 this.cart.body.velocity.y -= 15;
