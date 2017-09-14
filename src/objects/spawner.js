@@ -11,7 +11,7 @@ export default class Spawner {
                 [Item1Class, 0.5]
             ]
     */
-    constructor (game, minX = 0, minY = 0, maxX = 0, maxY = 0, spawnItems = {}) {
+    constructor (game, minX = 0, minY = 0, maxX = 0, maxY = 0, spawnItems = []) {
         this.game = game;
         this.minX = minX;
         this.maxX = maxX > minX ? maxX : minX;
