@@ -6,6 +6,6 @@ export default class Bomb extends Item {
 
         this.spawnRate = 0.1;
 
-        this.scale.x = this.scale.y = 0.25;
+        this.scale.setTo(0.25);
     }
 }
