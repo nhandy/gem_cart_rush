@@ -24,6 +24,10 @@ export default class PlayState extends Phaser.State {
         this.game.load.image('arrow', '/assets/arrow.png');
         this.game.load.image('brake', '/assets/brake.png');
         this.game.load.image('blueGem', '/assets/blueGem.png');
+        this.booster = 0;
+        this.powerUps = [];
+        this.powerUpNames = [];
+        this.usedPowerUp = [];
     }
 
     create () {
@@ -48,9 +52,9 @@ export default class PlayState extends Phaser.State {
         this.player.cart.events.speedUpdated.add(speed => { this.setGroupSpeed(this.tracks, speed); this.setGroupSpeed(this.bombs, speed); this.setGroupSpeed(this.gems, speed); });
 
         this.game.backButton = this.game.add.button(0, 0, 'back_button', function () { this.game.state.start('MainMenu') }, this);
-        this.game.boostButton = this.game.add.button(this.game.width - 100, 0, 'arrow', () => { if (this.player.cart.booster < 700) { this.player.cart.booster += 50; } }, this);
-        this.game.brakeButton = this.game.add.button(this.game.width - 200, 0, 'brake', () => { if (this.player.cart.booster > -100) { this.player.cart.booster -= 50; } }, this);
-
+        this.powerUpNames.push('boost','brake');
+        this.powerUps['boost'] = this.game.add.button(this.game.width - 100, 0, 'arrow', () => {if (this.player.cart.booster < 700) { this.usePowerup('boost', 120); this.player.cart.booster += 300; }}, this);
+        this.powerUps['brake'] = this.game.add.button(this.game.width - 200, 0, 'brake', () => {if (this.player.cart.booster > -100) { this.usePowerup('brake', 240); this.player.cart.booster -= 30; }}, this);
         this.gemSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [BlueGem]);
         this.bombSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [Bomb]);
   
@@ -72,10 +76,20 @@ export default class PlayState extends Phaser.State {
         //  Scroll the background relative to track speed
         this.bgCave.tilePosition.x -= -(this.t.body.velocity.x / 100)
 
-        if (this.t.body.x < 800) {
+        // Keep spawning the tracks
+        if (this.t.body.x < this.game.width) {
             this.spawn();
         }
 
+        // Wait till the timer is up to reenable the buttons
+        this.powerUpNames.forEach(function(element) {
+            if (this.usedPowerUp[element]) {
+                this.usedPowerUp[element]--;
+                if (!this.usedPowerUp[element]) {
+                    this.reenablePowerup(element);
+                }
+            }
+        }, this);
         var firstAlive = this.tracks.getFirstAlive();
         if (firstAlive.x < -35) { // Cleanup as we go
             this.tracks.removeChild(firstAlive);
@@ -111,4 +125,16 @@ export default class PlayState extends Phaser.State {
     setGroupSpeed (group, speed) {
         group.setAll('body.velocity.x', (speed), 'true', 'false', 0);
     }
+
+    usePowerup(powerUp, resetTime) {
+        this.powerUps[powerUp].tint = 0x888888;
+        this.powerUps[powerUp].inputEnabled = false;
+        this.usedPowerUp[powerUp] = resetTime;
+    }
+
+    reenablePowerup(powerUp) {
+        this.powerUps[powerUp].tint = 0xffffff;
+        this.powerUps[powerUp].inputEnabled = true;
+    }
+
 };
