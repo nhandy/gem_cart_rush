@@ -8,6 +8,9 @@ export default class Player extends Phaser.Group {
         this.enableBody = true;
         this.jumpKey = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
         this.jumping = 0;
+        this.jumpButton = this.game.add.button(this.game.width - 250, 0, 'jumper');
+        this.jumpButton.onInputDown.add(this.jumpButtonDown, this);
+        this.jumpButton.onInputUp.add(this.jumpButtonUp, this);
 
         this.cart = new Cart(this.game, 50, 430);
         this.add(this.cart);

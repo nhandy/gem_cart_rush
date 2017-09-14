@@ -64,10 +64,6 @@ export default class PlayState extends Phaser.State {
         this.powerUps['boost'] = this.game.add.button(this.game.width - 100, 0, 'arrow', () => {if (this.player.cart.booster < 700) { this.usePowerup('boost', 120); this.player.cart.booster += 300; }}, this);
         this.powerUps['brake'] = this.game.add.button(this.game.width - 200, 0, 'brake', () => {if (this.player.cart.booster > -100) { this.usePowerup('brake', 240); this.player.cart.booster -= 30; }}, this);
 
-        this.game.jumpButton = this.game.add.button(this.game.width - 300, 0, 'jumper');
-        this.game.jumpButton.onInputDown.add(this.player.jumpButtonDown, this.player);
-        this.game.jumpButton.onInputUp.add(this.player.jumpButtonUp, this.player);
-
         this.gemSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [BlueGem]);
         this.bombSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [Bomb]);
         this.portalSpawner = new Spawner(this.game, this.game.width + 15, 200, this.game.width + 15, 600, [Portal]);
