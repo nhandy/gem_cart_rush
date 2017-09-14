@@ -17,22 +17,22 @@ export default class Cart extends Phaser.Sprite {
 
     syncSpeed () {
         let modifier = 0;
-        let fixPosition = false;
 
         if (this.body.x > 150) {
             modifier = 20;
-            fixPosition = true;
+            this.fixPosition = true;
         } else if (this.body.x < 20) {
             modifier = -20;
-            fixPosition = true;
-        } else if (fixPosition && (this.body.x >= 70 && this.body.x <= 80)) {
+            this.fixPosition = true;
+        } else if (this.fixPosition && (this.body.x >= 70 && this.body.x <= 80)) {
             // Move the cart until it gets up to full speed
+            this.fixPosition = 0;
             this.events.speedUpdated.dispatch(-(this.body.velocity.x));
         } else {
             if (this.body.velocity.x < (300 + this.booster)) {
                 this.body.velocity.x += 10;
             // Move the cart until it gets back close to full speed
-        } else if (this.body.velocity.x > (200 + this.booster + 20)) {
+        } else if (this.body.velocity.x > (300 + this.booster + 20)) {
                 this.body.velocity.x -= 10;
             }
         }
