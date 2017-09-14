@@ -12,49 +12,49 @@ export default class Player extends Phaser.Group {
         this.jumpButton = this.game.add.button(this.game.width - 250, 0, 'jumper');
         this.jumpButton.onInputDown.add(this.jumpButtonDown, this);
         this.jumpButton.onInputUp.add(this.jumpButtonUp, this);
-
-        this.cart = new Cart(this.game, 50, 430);
-        this.add(this.cart);
     }
+
+    resetPlay () {
+        if (!this.cart) {
+            this.cart = new Cart(this.game, 50, 430);
+            this.add(this.cart);
+        } else {
+            this.cart.reset(50, 430);
+        }
+        this.game.add.existing(this.cart);
+    }
+
     getInfo () {
         return this.playerinfo;
     }
+
     setInfo (key, value) {
         this.playerinfo[key] = value;
     }
+
     jumpButtonDown () {
         console.log("RUNNING jumpButtonDown ...");
-        this.jumping |= 1;
+        this.cart.isJumping |= 1;
     }
-    jumpButtonUp() {
+
+    jumpButtonUp () {
         console.log("RUNNING jumpButtonUp ...");
-        this.jumping &= ~1;
+        this.cart.isJumping &= ~1;
     }
+
     update () {
         super.update();
 
-        if (this.jumpKey.isDown) {
-            this.jumping |= 2;
-        }
-        else {
-            this.jumping &= ~2;
-        }
-
-        if (this.jumpable) {
-            if (this.jumping && this.cart.body.y > 350) {
-                console.log("JUMPING: " + this.jumping);
-                this.cart.body.velocity.x  = 0;
-                this.cart.body.velocity.y -= 15;
+        if (this.cart) {
+            if (this.jumpKey.isDown) {
+                this.cart.isJumping |= 2;
+            } else {
+                this.cart.isJumping &= ~2;
             }
-            else {
-                this.jumpable = 0;
-            }
-        }
-        else if (this.cart.body.y >= 430) {
-            this.jumpable = 1;
         }
     }
-    collectGem() {
+
+    collectGem () {
         this.setInfo('gems', this.getInfo()['gems'] + 1);
     }
 }

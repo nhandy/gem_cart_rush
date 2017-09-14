@@ -18,6 +18,10 @@ require('../../assets/images/arrow.png');
 require('../../assets/images/brake.png');
 
 export default class PlayState extends Phaser.State {
+    init () {
+        this.player = this.game.player = this.game.player || new Player(this.game);
+    }
+
     preload () {
         this.game.load.image('this.bgCave', '/assets/bg_cave.png');
         this.game.load.image('track_str', '/assets/track_str_sm.gif');
@@ -50,7 +54,7 @@ export default class PlayState extends Phaser.State {
         this.portals = this.game.add.group();
         this.portals.enableBody = true;
 
-        this.game.player = this.player = new Player(this.game);
+        this.player.resetPlay();
 
         this.player.cart.events.speedUpdated.add(speed => { this.setGroupSpeed(this.tracks, speed); this.setGroupSpeed(this.bombs, speed); this.setGroupSpeed(this.gems, speed); this.setGroupSpeed(this.portals, speed); });
 
@@ -100,7 +104,7 @@ export default class PlayState extends Phaser.State {
         }, this);
 
         // Make sure collision with tracks happens correctly, may need to do a callback to make sure it goes up hill?
-        this.game.physics.arcade.collide(this.player, this.tracks, null, null, null);
+        this.game.physics.arcade.collide(this.player.cart, this.tracks, null, null, null);
     }
 
     spawn () {

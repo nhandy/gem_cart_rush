@@ -13,6 +13,9 @@ export default class Cart extends Phaser.Sprite {
         this.events.speedUpdated = new Phaser.Signal();
 
         this.booster = 0;
+
+        this.canJump = 1;
+        this.isJumping = 0;
     }
 
     syncSpeed () {
@@ -43,5 +46,18 @@ export default class Cart extends Phaser.Sprite {
 
     update () {
         this.syncSpeed();
+
+        if (this.canJump) {
+            if (this.isJumping && this.body.y > 350) {
+                console.log("JUMPING: " + this.isJumping);
+                //this.cart.body.velocity.x  = 0;
+                this.body.velocity.y -= 15;
+            }
+            else {
+                this.canJump = 0;
+            }
+        } else if (this.body.y >= 430) {
+            this.canJump = 1;
+        }
     }
 }
