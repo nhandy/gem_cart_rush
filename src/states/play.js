@@ -9,6 +9,10 @@ require('../../assets/images/cart_str.gif');
 require('../../assets/images/bomb.png');
 require('../../assets/images/arrow.png');
 require('../../assets/images/brake.png');
+require('../../assets/images/blueGem.png');
+import dropRates from '../../assets/json/drop_rates.json';
+var bg_cave;
+var cart;
 var tracks;
 var full_speed = 0;
 var fix_position = 0;
@@ -23,6 +27,7 @@ export default class PlayState extends Phaser.State {
         this.game.load.image('bomb', '/assets/bomb.png');
         this.game.load.image('arrow', '/assets/arrow.png');
         this.game.load.image('brake', '/assets/brake.png');
+        this.game.load.image('blueGem', '/assets/blueGem.png');
     }
 
     create () {
