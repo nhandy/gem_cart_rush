@@ -7,14 +7,17 @@ export default class Portal extends Item {
             this.spawnRate = 0.00;
         }
         else {
-            this.spawnRate = 0.01;
+            this.spawnRate = 0.1;
         }
 
         this.scale.setTo(0.30);
+        this.events = this.events || {};
+        this.events.playerWins = new Phaser.Signal();
     }
 
     collided () {
         console.log('YOU WIN!!');
+        this.events.playerWins.dispatch();
         this.destroy();
     }
 }

@@ -16,6 +16,10 @@ require('../../assets/images/bomb.png');
 require('../../assets/images/portal.png');
 require('../../assets/images/arrow.png');
 require('../../assets/images/brake.png');
+require('../../assets/images/Level_Button.png');
+require('../../assets/images/MenuButton.png');
+require('../../assets/images/ContinueArrow.png');
+require('../../assets/images/ReplayArrow.png');
 
 export default class PlayState extends Phaser.State {
     init () {
@@ -34,6 +38,10 @@ export default class PlayState extends Phaser.State {
         this.game.load.image('brake', '/assets/brake.png');
         this.game.load.image('jumper', '/assets/greyGem.png');
         this.game.load.image('blueGem', '/assets/blueGem.png');
+        this.game.load.image('level_button', '/assets/Level_Button.png');
+        this.game.load.image('menu', '/assets/MenuButton.png');
+        this.game.load.image('continue', '/assets/ContinueArrow.png');
+        this.game.load.image('replay', '/assets/ReplayArrow.png');
         this.booster = 0;
         this.powerUps = [];
         this.powerUpNames = [];
@@ -81,8 +89,8 @@ export default class PlayState extends Phaser.State {
     update () {
         var gemCount = this.player.getInfo()["gems"];
         this.gemText.setText("Gems: " + gemCount);
-        var score = this.player.getInfo()["score"];
-        this.scoreText.setText("Score: " + score);
+        this.score = this.player.getInfo()["score"];
+        this.scoreText.setText("Score: " + this.score);
         //  Scroll the background relative to track speed
         const lastAliveTrack = this.tracks.getLastAlive();
 
@@ -132,6 +140,7 @@ export default class PlayState extends Phaser.State {
         if (portal) {
             portal.body.x = nextTrack.body.x;
             portal.body.velocity.x = currentSpeed;
+            portal.events.playerWins.add(() => {this.triggerOverlay()});
             this.portals.add(portal);
         }
     }
@@ -150,5 +159,69 @@ export default class PlayState extends Phaser.State {
         this.powerUps[powerUp].tint = 0xffffff;
         this.powerUps[powerUp].inputEnabled = true;
     }
+
+	triggerOverlay () {
+        // TODO stop the game, somehow
+		this.overlay = this.add.bitmapData(this.game.width, this.game.height);
+		this.overlay.ctx.fillStyle = '#000';
+		this.overlay.ctx.fillRect(0, 0, this.game.width, this.game.height);
+		this.panel = this.add.sprite(0, this.game.height, this.overlay);
+		this.panel.alpha = 0.65;
+
+		var levelCompletePanel = this.add.tween(this.panel);
+		levelCompletePanel.to({y: 0}, 500);
+
+		levelCompletePanel.onComplete.add(function() {
+			var style = {font: '40px Arial', fill: '#fff'};
+			this.add.text(this.game.width/2, this.game.height/4,
+				'Congratulations!', style).anchor.setTo(0.5);
+			this.add.text(this.game.width/2, this.game.height/4 + 40,
+				'Level Complete!', style).anchor.setTo(0.5);
+
+			style = {font: '30px Arial', fill: '#fff'};
+			this.add.text(this.game.width/2, this.game.height/3 + 40, 
+				'Best Score: ' + this.score, style).anchor.setTo(0.5);
+
+			this.add.text(this.game.width/2, this.game.height/3 + 80, 
+				'Your Score: ' + this.score, style).anchor.setTo(0.5);
+
+			if (this.bestTime == this.yourTime) {
+				style = {font: '35px Arial', fill: '#f80'};
+				this.add.text(this.game.width/2, this.game.height/2 + 30,
+					'New Record!!!', style).anchor.setTo(0.5);
+			}
+
+			this.replayLevelIcon = this.add.button(this.game.width/2, this.game.height * 3/4, 'level_button', function () { this.game.state.start('Play') }, this);
+			this.replayLevelIcon.customParams = {};
+			this.replayLevelIcon.customParams.levelNumber = this.currentLevel;
+			this.replayLevelIcon.width = this.game.width / 7 - 2;
+			this.replayLevelIcon.height = this.game.width / 7 - 2;
+			this.replayLevelIcon.anchor.setTo(0.5);
+			this.replayArrow = this.add.sprite(this.replayLevelIcon.position.x, this.replayLevelIcon.position.y, 'replay');
+			this.replayArrow.anchor.setTo(0.5);
+			this.replayArrow.scale.setTo(this.replayLevelIcon.width/this.replayArrow.width*0.6);
+
+			this.playNextLevelIcon = this.add.button(this.game.width * 3/4, this.game.height * 3/4, 'level_button', function () { this.game.state.start('MainMenu') }, this);
+			this.playNextLevelIcon.customParams = {};
+			this.playNextLevelIcon.customParams.levelNumber = this.nextLevel;
+			this.playNextLevelIcon.width = this.game.width / 7 - 2;
+			this.playNextLevelIcon.height = this.game.width / 7 - 2;
+			this.playNextLevelIcon.anchor.setTo(0.5);
+			this.playArrow = this.add.sprite(this.playNextLevelIcon.position.x + 4, this.playNextLevelIcon.position.y, 'continue');
+			this.playArrow.anchor.setTo(0.5);
+			this.playArrow.scale.setTo(this.playNextLevelIcon.width/this.playArrow.width*0.6);
+
+			this.levelSelectorIcon = this.add.button(this.game.width/4, this.game.height * 3/4, 'level_button', function () { this.game.state.start('Shop') }, this);
+			this.levelSelectorIcon.width = this.game.width / 7 - 2;
+			this.levelSelectorIcon.height = this.game.width / 7 - 2;
+			this.levelSelectorIcon.anchor.setTo(0.5);
+			this.menuIcon = this.add.sprite(this.levelSelectorIcon.position.x, this.levelSelectorIcon.position.y, 'menu');
+			this.menuIcon.anchor.setTo(0.5);
+			this.menuIcon.scale.setTo(this.levelSelectorIcon.width/this.menuIcon.width*0.6);
+
+		}, this);
+
+		levelCompletePanel.start();
+	}
 
 };
